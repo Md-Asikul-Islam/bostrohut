@@ -22,7 +22,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -65,10 +65,10 @@ const LoginPage = () => {
             {/* Heading */}
             <div className="py-6 text-center">
               <h1 className="text-2xl font-semibold sm:text-3xl text-gradient-primary">
-                Login Into Account
+                Create Account
               </h1>
               <p className="mt-2 text-lg text-muted-foreground md:text-xl">
-                Login into your account by filling out the form below
+                create new  account by filling out the form below
               </p>
             </div>
 
@@ -150,20 +150,20 @@ const LoginPage = () => {
                 <ButtonLoading
                   loading={loading}
                   type="submit"
-                  text="Login"
+                  text="Register"
                   className="w-full bg-purple-500 text-lg hover:bg-purple-600 transition-colors"
                 />
 
                 {/* Footer */}
-                <div className="text-center text-sm space-x-2">
+                <div className="text-[16px] text-center  space-x-2">
                   <span className="text-muted-foreground">
-                    Don&apos;t have an account?
+                    Already have an account?
                   </span>
                   <Link
-                    href="/auth/register"
+                    href="/auth/login"
                     className="text-purple-500 hover:underline"
                   >
-                    Create Account
+                    login
                   </Link>
                 </div>
               </form>
@@ -175,4 +175,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
