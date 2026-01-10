@@ -26,15 +26,15 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const formSchema = zodSchema.pick({ email: true }).extend({
-    password: z.string().min(8, "Password must be at least 8 characters"),
-  });
+  const formSchema = zodSchema.pick({name :true, email: true, password : true, confirmPassword : true })
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name : "",
       email: "",
       password: "",
+      confirmPassword : "",
     },
   });
 
@@ -76,8 +76,29 @@ const RegisterPage = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleLoginSubmit)}
-                className="space-y-6"
+                className=""
               >
+                 {/* Name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-[16px]">FullName</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="name"
+                          placeholder="Enter Your Name "
+                          {...field}
+                          className=" focus-visible:ring-purple-500"
+                        />
+                      </FormControl>
+                      <div className="min-h-5">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
                 {/* Email */}
                 <FormField
                   control={form.control}
@@ -131,7 +152,38 @@ const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
+                
+                  {/* Confirm Password */}
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormLabel> Confrim Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your confirm password"
+                          {...field}
+                          className="pr-10  focus-visible:ring-purple-500"
+                        />
+                      </FormControl>
 
+                      <button
+                        type="button"
+                        aria-label="Toggle password visibility"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute right-3 top-8 text-muted-foreground hover:text-foreground transition"
+                      >
+                        {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                      </button>
+
+                      <div className="min-h-5">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
                 {/* Actions */}
                 <div className="flex items-center justify-between text-[16px]">
                   <div className="space-x-2 flex items-center">
