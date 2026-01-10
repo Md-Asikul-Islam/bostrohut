@@ -26,19 +26,24 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const formSchema = zodSchema.pick({name :true, email: true, password : true, confirmPassword : true })
+  const formSchema = zodSchema.pick({
+    name: true,
+    email: true,
+    password: true,
+    confirmPassword: true,
+  });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name : "",
+      name: "",
       email: "",
       password: "",
-      confirmPassword : "",
+      confirmPassword: "",
     },
   });
 
-  const handleLoginSubmit = async (values) => {
+  const handleRegisterSubmit = async (values) => {
     try {
       setLoading(true);
       // API call here
@@ -68,23 +73,23 @@ const RegisterPage = () => {
                 Create Account
               </h1>
               <p className="mt-2 text-lg text-muted-foreground md:text-xl">
-                create new  account by filling out the form below
+                create new account by filling out the form below
               </p>
             </div>
 
             {/* Form */}
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(handleLoginSubmit)}
+                onSubmit={form.handleSubmit(handleRegisterSubmit)}
                 className=""
               >
-                 {/* Name */}
+                {/* Name */}
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[16px]">FullName</FormLabel>
+                      <FormLabel className="text-[16px]">Full Name</FormLabel>
                       <FormControl>
                         <Input
                           type="name"
@@ -152,8 +157,8 @@ const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
-                
-                  {/* Confirm Password */}
+
+                {/* Confirm Password */}
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -185,7 +190,7 @@ const RegisterPage = () => {
                   )}
                 />
                 {/* Actions */}
-                <div className="flex items-center justify-between text-[16px]">
+                <div className="flex items-center justify-between text-[16px] space-y-3">
                   <div className="space-x-2 flex items-center">
                     <input type="checkbox" />
                     <span className="text-muted-foreground ">Remember me</span>
@@ -207,7 +212,7 @@ const RegisterPage = () => {
                 />
 
                 {/* Footer */}
-                <div className="text-[16px] text-center  space-x-2">
+                <div className="text-[16px] text-center  space-x-2 mt-3">
                   <span className="text-muted-foreground">
                     Already have an account?
                   </span>
