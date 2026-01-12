@@ -1,5 +1,4 @@
 "use client";
-
 import { Card, CardContent } from "@/components/ui/card";
 import Logo from "@/public/assets/images/logo.png";
 import Image from "next/image";
@@ -25,13 +24,21 @@ import { motion } from "framer-motion";
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const formSchema = zodSchema.pick({
-    name: true,
-    email: true,
-    password: true,
-    confirmPassword: true,
-  });
+  const formSchema = zodSchema
+    .pick({
+      name: true,
+      email: true,
+      password: true,
+    })
+    .extend({
+      confirmPassword: z.string().min(8, "Confirm password is required"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -89,12 +96,13 @@ const RegisterPage = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[16px]">Full Name</FormLabel>
+                      <FormLabel>Full Name</FormLabel>
                       <FormControl>
                         <Input
                           type="name"
                           placeholder="Enter Your Name "
                           {...field}
+                          autoComplete="name"
                           className=" focus-visible:ring-purple-500"
                         />
                       </FormControl>
@@ -110,13 +118,13 @@ const RegisterPage = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[16px]">Email</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="example@gmail.com"
                           {...field}
-                          className=" focus-visible:ring-purple-500"
+                          className=" focus-visible:ring-purple-500 "
                         />
                       </FormControl>
                       <div className="min-h-5">
@@ -138,7 +146,9 @@ const RegisterPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
                           {...field}
-                          className="pr-10  focus-visible:ring-purple-500"
+                          className={` focus-visible:ring-purple-500 transition-colors ${
+                            field.value ? "bg-[#E8F0FE]" : ""
+                          }`}
                         />
                       </FormControl>
 
@@ -146,7 +156,7 @@ const RegisterPage = () => {
                         type="button"
                         aria-label="Toggle password visibility"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-3 top-8 text-muted-foreground hover:text-foreground transition"
+                        className="absolute right-3 top-8.5 text-muted-foreground hover:text-foreground transition"
                       >
                         {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                       </button>
@@ -167,20 +177,22 @@ const RegisterPage = () => {
                       <FormLabel> Confrim Password</FormLabel>
                       <FormControl>
                         <Input
-                          type={showPassword ? "text" : "password"}
+                          type={showConfirmPassword ? "text" : "password"}
                           placeholder="Enter your confirm password"
                           {...field}
-                          className="pr-10  focus-visible:ring-purple-500"
+                          className={` focus-visible:ring-purple-500 transition-colors ${
+                            field.value ? "bg-[#E8F0FE]" : ""
+                          }`}
                         />
                       </FormControl>
 
                       <button
                         type="button"
                         aria-label="Toggle password visibility"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-3 top-8 text-muted-foreground hover:text-foreground transition"
+                        onClick={() => setShowConfirmPassword((prev) => !prev)}
+                        className="absolute right-3 top-8.5 text-muted-foreground hover:text-foreground transition"
                       >
-                        {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                        {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                       </button>
 
                       <div className="min-h-5">

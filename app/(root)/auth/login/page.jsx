@@ -84,7 +84,7 @@ const LoginPage = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[16px]">Email</FormLabel>
+                      <FormLabel >Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
@@ -112,7 +112,9 @@ const LoginPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
                           {...field}
-                          className="pr-10  focus-visible:ring-purple-500"
+                          className={` focus-visible:ring-purple-500  ${
+                            field.value ? "bg-[#E8F0FE]" : ""
+                          }`}
                         />
                       </FormControl>
 
@@ -120,7 +122,7 @@ const LoginPage = () => {
                         type="button"
                         aria-label="Toggle password visibility"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-3 top-8 text-muted-foreground hover:text-foreground transition"
+                        className="absolute right-3 top-8.5 text-muted-foreground hover:text-foreground transition"
                       >
                         {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                       </button>
