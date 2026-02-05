@@ -1,6 +1,6 @@
 import { Assistant, } from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from 'react-hot-toast';
 const assistant = Assistant({
   variable: "--font-assistant",
   subsets: ["latin"],
@@ -20,6 +20,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${assistant.variable}  antialiased`}
       >
+        <Toaster position="top-0 right-0" />
         {children}
       </body>
     </html>

@@ -1,11 +1,11 @@
 "use client";
-import { Card, CardContent } from "@/components/ui/card";
-import Logo from "@/public/assets/images/logo.png";
-import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { zodSchema } from "@/lib/schema/auth.schema.js";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { zodSchema } from "@/lib/schema/auth.schema.js";
+import { Card, CardContent } from "@/components/ui/card";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import {
   Form,
@@ -17,14 +17,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ButtonLoading from "@/components/aplications/ButtonLoading";
-import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+import Image from "next/image";
+import Logo from "@/public/assets/images/logo.png";
+import apiInstance from "@/lib/axios";
 
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const formSchema = zodSchema
     .pick({
@@ -50,10 +54,19 @@ const RegisterPage = () => {
     },
   });
 
-  const handleRegisterSubmit = async (values) => {
+const handleRegisterSubmit = async (values) => {
+    setLoading(true);
+    const toastId = toast.loading("Creating your account..."); 
+
     try {
-      setLoading(true);
-      // API call here
+      const { data } = await apiInstance.post("/auth/register", values);
+
+      toast.success(data.message, { id: toastId });
+      form.reset();
+      setTimeout(() => router.push("/auth/login"), 2000);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "Something went wrong";
+      toast.error(errorMessage, { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -103,7 +116,9 @@ const RegisterPage = () => {
                           placeholder="Enter Your Name "
                           {...field}
                           autoComplete="name"
-                          className=" focus-visible:ring-purple-500"
+                          className={` focus-visible:ring-purple-500 transition-colors ${
+                            field.value ? "bg-[#E8F0FE]" : ""
+                          }`}
                         />
                       </FormControl>
                       <div className="min-h-5">
